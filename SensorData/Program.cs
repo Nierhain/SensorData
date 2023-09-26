@@ -13,6 +13,7 @@ builder.Services.AddCors(cors => {
         config.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
     });
 });
+
 var app = builder.Build();
 
 app.UseCors();

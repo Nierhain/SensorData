@@ -24,4 +24,10 @@ public class SensorHub : Hub
 
         await Clients.All.SendAsync("dioxide", gases);
     }
+
+    public async Task GetMonoxide(){
+        var gases = await _context.Gases.Where(x => x.Type == GasType.Monoxide).OrderBy(x => x.Timestamp).AsNoTracking().ToListAsync();
+
+        await Clients.All.SendAsync("monoxide", gases);
+    }
 }
