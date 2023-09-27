@@ -8,9 +8,14 @@ const columns = [
 ]
 function App() {
   const [dioxide, setDioxide] = useState<Gas[]>();
+  const [monoxide, setMonoxide] = useState<Gas[]>();
 
   SignalRContext.useSignalREffect("getDioxide", (gases: Gas[]) => {
     setDioxide(gases);
+  }, [])
+  
+  SignalRContext.useSignalREffect("getMonoxide", (gases: Gas[]) => {
+    setMonoxide(gases);
   }, [])
 
   return ( 
@@ -19,6 +24,11 @@ function App() {
       <Table 
         columns={columns}
         dataSource={dioxide}
+      />
+      Monoxide:
+      <Table 
+        columns={columns}
+        dataSource={monoxide}
       />
     </>
   )
