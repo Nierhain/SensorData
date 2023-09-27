@@ -308,3 +308,7 @@ sketch
 # End of https://www.toptal.com/developers/gitignore/api/aspnetcore,visualstudiocode,react
 .vscode/tasks.json
 .vscode/launch.json
+
+
+DB/*
+!DB/.gitkeep
