@@ -18,17 +18,37 @@ import {
   CardHeader,
   CardTitle,
 } from "./components/ui/card"
-import { Input } from "./components/ui/input"
-import { Label } from "./components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./components/ui/select"
 import { Overview } from "./components/ui/overview";
+import React from "react";
 
+interface SensorData {
+  id: number;
+  name: string;
+  value: number;
+};
+
+const [_test_data, setData] = React.useState<SensorData[]>();
+
+const PushSomeData = (state?: SensorData[], times: number) => {
+  
+  const size: number = state.length;
+  const newsize: number = state.length + times;
+
+  for (let i = size + 1; i <= newsize; i++) {
+    const sensorName = `Sensor ${i}`;
+    const rvalue = Math.floor(Math.random() * 101);
+    const newDataPoint: SensorData = {
+      id: i,
+      name: sensorName,
+      value: rvalue
+    };
+    
+    setData([...state, newDataPoint]);
+  }
+};
+
+
+PushSomeData(_test_data, 5);
 
 export default function Home() {
   return (
@@ -72,42 +92,77 @@ export default function Home() {
           </h1>
 
           <div >
-           <Card className="w-[350px]">
+           <Card >
               <CardHeader>
                 <CardTitle>Sniffy the Sniffing Dog </CardTitle>
                 <CardDescription>SNIFFY SNIFFING FOR SOMETHING</CardDescription>
               </CardHeader>
               <CardContent>
-                <Overview />
+                <Overview data={_test_data}/>
               </CardContent>
-              <CardFooter className="flex justify-between">
+              <CardFooter >
                 <Button variant="outline">Cancel</Button>
-                <Button>Deploy</Button>
+                <Button onClick={() => PushSomeMoreData(_test_data)}>Download RAM</Button>
               </CardFooter>
             </Card>
           </div>
 
           <div >
-            <div >
-              <h2>Item 1</h2>
-              <Table></Table>
-            </div>
-            <div >
-              <h2>Item 2</h2>
-              <Table></Table>
-            </div>
-            <div >
-              <h2>Item 3</h2>
-              <Table></Table>
-            </div>
-            <div >
-              <h2>Item 4</h2>
-              <Table></Table>
-            </div>
-            <div >
-              <h2>Item 5</h2>
-              <Table></Table>
-            </div>
+            <Card >
+              <CardHeader>
+                <CardTitle>Sensor 1</CardTitle>
+                <CardDescription></CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div >
+                  <Table />
+                </div>
+              </CardContent>
+            </Card>
+            <Card >
+              <CardHeader>
+                <CardTitle>Sensor 2</CardTitle>
+                <CardDescription></CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div >
+                  <Table />
+                </div>
+              </CardContent>
+            </Card>
+            <Card >
+              <CardHeader>
+                <CardTitle>Sensor 3</CardTitle>
+                <CardDescription></CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div >
+                  <Table />
+                </div>
+              </CardContent>
+            </Card>
+            <Card >
+              <CardHeader>
+                <CardTitle>Sensor 4</CardTitle>
+                <CardDescription></CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div >
+                  <Table />
+                </div>
+              </CardContent>
+            </Card>
+            <Card >
+              <CardHeader>
+                <CardTitle>Sensor 5</CardTitle>
+                <CardDescription></CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div >
+                  <Table />
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
         </div>
