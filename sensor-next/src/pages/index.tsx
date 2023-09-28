@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import BarChartComponent from './BarChart';
-import Table from './Table';
+import {Table} from './components/ui/table';
 import {
   Menubar,
   MenubarContent,
@@ -10,7 +10,26 @@ import {
   MenubarSeparator,
   MenubarShortcut,
   MenubarTrigger,
-} from "../../components/ui/menubar"
+} from "./components/ui/menubar"
+import { Button } from "./components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./components/ui/card"
+import { Input } from "./components/ui/input"
+import { Label } from "./components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./components/ui/select"
+import { Overview } from "./components/ui/overview";
 
 
 export default function Home() {
@@ -51,11 +70,23 @@ export default function Home() {
           </Menubar>
 
           <h1 >
-            Create T3 App
+            Sniffy
           </h1>
 
           <div >
-            <BarChartComponent></BarChartComponent>
+           <Card className="w-[350px]">
+              <CardHeader>
+                <CardTitle>Sniffy the Sniffing Dog </CardTitle>
+                <CardDescription>SNIFFY SNIFFING FOR SOMETHING</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Overview />
+              </CardContent>
+              <CardFooter className="flex justify-between">
+                <Button variant="outline">Cancel</Button>
+                <Button>Deploy</Button>
+              </CardFooter>
+            </Card>
           </div>
 
           <div >

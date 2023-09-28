@@ -15,6 +15,7 @@ const data: DataItem[] = [
   { name: 'Category 5', value: 30, color: '#a3a0fb'},
 ];
 
+
 const BarChartComponent: React.FC = () => {
   return (
     <ResponsiveContainer width="100%" height={400}>
