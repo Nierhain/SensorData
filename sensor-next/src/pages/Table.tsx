@@ -17,7 +17,7 @@ const Table: React.FC = () => {
   ];
 
   return (
-    <div className="table text-center text-sm text-indigo-700 font-extralight">
+    <div>
       <table>
         <thead>
           <tr>

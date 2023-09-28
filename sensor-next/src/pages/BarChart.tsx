@@ -21,7 +21,7 @@ const BarChartComponent: React.FC = () => {
       <BarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
-        <YAxis />
+        <YAxis dataKey="value"/>
         <Tooltip />
         <Legend />
         {data.map((entry) => (
