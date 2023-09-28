@@ -1,6 +1,4 @@
 import Head from "next/head";
-import Link from "next/link";
-import BarChartComponent from './BarChart';
 import {Table} from './components/ui/table';
 import {
   Menubar,
