@@ -5,8 +5,7 @@ import Link from "next/link";
 import { api } from "~/utils/api";
 const { darkAlgorithm } = theme;
 export default function Home() {
-  // const dioxide = api.data.dioxide.useQuery();
-
+  const dioxide = api.data.dioxide.useQuery({});
   return (
     <>
       <Head>
