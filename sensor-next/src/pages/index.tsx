@@ -29,6 +29,17 @@ import {
 } from "./components/ui/select"
 import { Overview } from "./components/ui/overview";
 
+function test() {
+  let x = 1 + 1;
+  return x == 2;
+}
+
+function HelloWorld({value}: {value: number}) {
+  const [counter, setCounter] = useState<number>(0);
+  const otherValue = 0;
+
+  return <div>Counter: {counter}<button onClick={() => setCounter(prev => prev + 1)}>Counter +</button></div>
+}
 
 export default function Home() {
   return (
@@ -86,6 +97,7 @@ export default function Home() {
               </CardFooter>
             </Card>
           </div>
+          <HelloWorld value={6}/>
 
           <div >
             <div >
