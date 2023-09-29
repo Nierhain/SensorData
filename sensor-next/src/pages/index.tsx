@@ -27,30 +27,48 @@ interface SensorData {
   value: number;
 };
 
-const [_test_data, setData] = React.useState<SensorData[]>();
-
-const PushSomeData = (state?: SensorData[], times: number) => {
-  
-  const size: number = state.length;
-  const newsize: number = state.length + times;
-
-  for (let i = size + 1; i <= newsize; i++) {
-    const sensorName = `Sensor ${i}`;
-    const rvalue = Math.floor(Math.random() * 101);
-    const newDataPoint: SensorData = {
-      id: i,
-      name: sensorName,
-      value: rvalue
-    };
-    
-    setData([...state, newDataPoint]);
-  }
-};
-
-
-PushSomeData(_test_data, 5);
 
 export default function Home() {
+
+
+  const [_test_data, setData] = React.useState<SensorData[]>();
+
+  if(_test_data){
+
+    for (let i = 1; i <= 5; i++) {
+      const sensorName = `Sensor ${i}`;
+      const rvalue = Math.floor(Math.random() * 101);
+      const newDataPoint: SensorData = {
+        id: i,
+        name: sensorName,
+        value: rvalue
+      };
+      
+      setData([..._test_data, newDataPoint]);
+    }
+  }
+
+  const PushSomeData: React.MouseEventHandler = (event) => {
+    
+    if(_test_data){
+
+      const size: number = _test_data.length;
+      const newsize: number = _test_data.length + 1;
+
+      for (let i = size + 1; i <= newsize; i++) {
+        const sensorName = `Sensor ${i}`;
+        const rvalue = Math.floor(Math.random() * 101);
+        const newDataPoint: SensorData = {
+          id: i,
+          name: sensorName,
+          value: rvalue
+        };
+        
+        setData([..._test_data, newDataPoint]);
+      }
+    }
+  };
+
   return (
     <>
       <Head>
@@ -102,7 +120,7 @@ export default function Home() {
               </CardContent>
               <CardFooter >
                 <Button variant="outline">Cancel</Button>
-                <Button onClick={() => PushSomeMoreData(_test_data)}>Download RAM</Button>
+                <Button onClick={PushSomeData}>Download RAM</Button>
               </CardFooter>
             </Card>
           </div>

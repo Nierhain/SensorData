@@ -8,19 +8,28 @@ interface SensorData {
     value: number;
   }
   
-export function Overview({data}: {data: SensorData[];}) {
+export function Overview({data}: {data?: SensorData[];}) {
+  
+  if(data){
+    return (
+      <ResponsiveContainer width="100%" height={350}>
+        <BarChart data={data}>
+          <XAxis
+            dataKey="name"
+            stroke="#888888"
+            tickLine={false}
+            axisLine={false}
+          />
+          <YAxis />
+          <Bar dataKey="value" fill="#6666ff" />
+        </BarChart>
+      </ResponsiveContainer>
+    )
+  }
+  
   return (
-    <ResponsiveContainer width="100%" height={350}>
-      <BarChart data={data}>
-        <XAxis
-          dataKey="name"
-          stroke="#888888"
-          tickLine={false}
-          axisLine={false}
-        />
-        <YAxis />
-        <Bar dataKey="value" fill="#6666ff" />
-      </BarChart>
-    </ResponsiveContainer>
+    <div>
+      <p>No Data</p>
+    </div>
   )
 }
