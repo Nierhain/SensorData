@@ -3,11 +3,12 @@
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
 
 interface SensorData {
-    id: number;
-    timestamp: Date;
-    name: string;
-    value: number;
-  }
+  id: number;
+  timestamp: Date;
+  timeLabel: string;
+  name: string;
+  value: number;
+};
   
 export function Overview({data}: {data?: SensorData[];}) {
   
@@ -16,7 +17,7 @@ export function Overview({data}: {data?: SensorData[];}) {
       <ResponsiveContainer width="100%" height={350}>
         <BarChart data={data}>
           <XAxis
-            dataKey="timestamp"
+            dataKey="timeLabel"
             stroke="#888888"
             tickLine={false}
             axisLine={false}

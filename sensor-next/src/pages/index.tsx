@@ -20,10 +20,12 @@ import {
 } from "./components/ui/card"
 import { Overview } from "./components/ui/overview";
 import React, { useEffect } from "react";
+import { timeStamp } from "console";
 
 interface SensorData {
   id: number;
   timestamp: Date;
+  timeLabel: string;
   name: string;
   value: number;
 };
@@ -45,21 +47,27 @@ function HelloWorld({value}: {value: number}) {
 export default function Home() {
 
 
-  const [_test_data, setData] = React.useState<SensorData[]>([{id: 0,timestamp: new Date(),name: 'Sensor 0', value: 42}]);
+  const [_test_data, setData] = React.useState<SensorData[]>([{id: 0,timestamp: new Date(), timeLabel: 'testLabel',name: 'Sensor 0', value: 42}]);
 
   useEffect(() => {
     if(_test_data){
-      let newDataPoint: SensorData[] = [];
-    for (let i = 1; i <= 5; i++) {
-      const sensorName = `Sensor ${i}`;
-      const rvalue = Math.floor(Math.random() * 101);
-      newDataPoint.push({
-        id: i,
-        timestamp: new Date(),
-        name: sensorName,
-        value: rvalue
-      });
+      const newDataPoint: SensorData[] = [];
       
+      for (let i = 1; i <= 5; i++) {
+
+        const sensorName = `Sensor ${i}`;
+        const rvalue = Math.floor(Math.random() * 101);
+        const _timestamp = new Date();
+        const _timeLabel = _timestamp.toTimeString();
+        
+        newDataPoint.push({
+          id: i,
+          timestamp: _timestamp,
+          timeLabel: _timeLabel,
+          name: sensorName,
+          value: rvalue
+        });
+        
     }
     setData([..._test_data, ...newDataPoint]);
   }
@@ -75,9 +83,13 @@ export default function Home() {
       for (let i = size + 1; i <= newsize; i++) {
         const sensorName = `Sensor ${i}`;
         const rvalue = Math.floor(Math.random() * 101);
+        const _timestamp = new Date();
+        const _timeLabel = _timestamp.toTimeString();
+       
         const newDataPoint: SensorData = {
           id: i,
-          timestamp: new Date(),
+          timestamp: _timestamp,
+          timeLabel: _timeLabel,
           name: sensorName,
           value: rvalue
         };
