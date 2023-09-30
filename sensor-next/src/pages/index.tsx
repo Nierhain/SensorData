@@ -1,14 +1,4 @@
 import Head from "next/head";
-import {Table} from './components/ui/table';
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "./components/ui/menubar"
 import { Button } from "./components/ui/button"
 import {
   Card,
@@ -20,15 +10,9 @@ import {
 } from "./components/ui/card"
 import { Overview } from "./components/ui/overview";
 import React, { useEffect } from "react";
-import { timeStamp } from "console";
+import { SensorData }from "./SensoroData";
+import {Table} from "./components/ui/table"
 
-interface SensorData {
-  id: number;
-  timestamp: Date;
-  timeLabel: string;
-  name: string;
-  value: number;
-};
 
 /*
 function test() {
@@ -54,21 +38,21 @@ export default function Home() {
       const newDataPoint: SensorData[] = [];
       
       for (let i = 1; i <= 5; i++) {
-
-        const sensorName = `Sensor ${i}`;
-        const rvalue = Math.floor(Math.random() * 101);
-        const _timestamp = new Date();
-        const _timeLabel = _timestamp.toTimeString();
-        
-        newDataPoint.push({
-          id: i,
-          timestamp: _timestamp,
-          timeLabel: _timeLabel,
-          name: sensorName,
-          value: rvalue
-        });
-        
-    }
+        for (let j = 1; j <= 5; j++){
+          const sensorName = `Sensor ${i}`;
+          const rvalue = Math.floor(Math.random() * 101);
+          const _timestamp = new Date();
+          const _timeLabel = _timestamp.getHours().toString() + ":" + _timestamp.getMinutes().toString() + ":" + _timestamp.getSeconds().toString();
+          
+          newDataPoint.push({
+            id: i,
+            timestamp: _timestamp,
+            timeLabel: _timeLabel,
+            name: sensorName,
+            value: rvalue
+          });
+        }
+      }
     setData([..._test_data, ...newDataPoint]);
   }
   }, []);
@@ -84,7 +68,7 @@ export default function Home() {
         const sensorName = `Sensor ${i}`;
         const rvalue = Math.floor(Math.random() * 101);
         const _timestamp = new Date();
-        const _timeLabel = _timestamp.toTimeString();
+        const _timeLabel = _timestamp.getHours().toString() + ":" + _timestamp.getMinutes().toString() + ":" + _timestamp.getSeconds().toString();
        
         const newDataPoint: SensorData = {
           id: i,
@@ -106,6 +90,7 @@ export default function Home() {
         <meta name="description" content="Sniffy Overview" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <main >
       
         <div >
@@ -119,6 +104,22 @@ export default function Home() {
             </CardContent>
             <CardFooter >
               <Button variant="outline">Cancel</Button>
+              <Button onClick={PushSomeData}>Download RAM</Button>
+            </CardFooter>
+          </Card>
+        </div>
+
+        <div>
+         <Card >
+            <CardHeader>
+              <CardTitle></CardTitle>
+              <CardDescription>SNIFFY SHOWING ALL SNIFFS FOR {_test_data[0]?.name}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table />
+            </CardContent>
+            <CardFooter >
+              <p>footer content</p>
               <Button onClick={PushSomeData}>Download RAM</Button>
             </CardFooter>
           </Card>
