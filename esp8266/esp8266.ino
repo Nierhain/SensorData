@@ -9,48 +9,60 @@
 
 
 #define         Board                   ("ESP8266")
-#define         MQ2Pin                     (A5)  //Analog input of ESP8266
-#define         MQ3Pin                     (A0)  //Analog input of ESP8266
-#define         MQ4Pin                     (A3)  //Analog input of ESP8266
-#define         MQ7Pin                     (A1)  //Analog input of ESP8266
-#define         MQ135Pin                   (A2)  //Analog input of ESP8266
-#define         Voltage_Resolution      (3.3) // Voltage, for ESP8266 it's 3V3
-#define         ADC_Bit_Resolution      (10) // For ESP8266
+// Analoge Pins für Sensoren
+#define         MQ2Pin                     (A5)
+#define         MQ3Pin                     (A0)  
+#define         MQ4Pin                     (A3)  
+#define         MQ7Pin                     (A1) 
+#define         MQ135Pin                   (A2)
+
+// Daten für Sensoren zur Kalibrierung
+#define         Voltage_Resolution      (3.3)
+#define         ADC_Bit_Resolution      (10)
 #define         RatioMQ2CleanAir        (9.83)
 #define         RatioMQ3CleanAir        (60)
 #define         RatioMQ4CleanAir        (4.4)
 #define         RatioMQ7CleanAir        (27.5)
 #define         RatioMQ135CleanAir      (3.6) // Ratio for specific sensor
 
+// WLAN-Accesspoint
 #define WIFI_SSID "redacted"
 #define WIFI_PASSWORD "redacted"
   
+
+// InfluxDB Daten
 #define INFLUXDB_URL "http://192.168.178.21:8086"
 #define INFLUXDB_TOKEN "S3rTN_HlZ_CCwqh8JlHpF-OlYyjywI6nSjJUbdK7DGFlW7yKnSwbjxl92_h58sEJH0jFLTfhuskyfe1mO5B_3w=="
 #define INFLUXDB_ORG "0ea4666e1b25eb2e"
 #define INFLUXDB_BUCKET "sniffy"
 
+// Motoren Pins
 int motor_left[] = {9, 8};
 int motor_right[] = {11, 10};
 
+// Variablen zum Speichern der Messdaten
 float monoxide = 0;
 float dioxide = 0;
 float ethanol = 0;
 float methanol = 0;
 float combustible = 0;
 
+// Objekte für Sensoren erstellen
 MQUnifiedsensor MQ2(Board, Voltage_Resolution, ADC_Bit_Resolution, MQ2Pin, "MQ-2");
 MQUnifiedsensor MQ3(Board, Voltage_Resolution, ADC_Bit_Resolution, MQ3Pin, "MQ-3");
 MQUnifiedsensor MQ4(Board, Voltage_Resolution, ADC_Bit_Resolution, MQ4Pin, "MQ-4");
 MQUnifiedsensor MQ7(Board, Voltage_Resolution, ADC_Bit_Resolution, MQ7Pin, "MQ-7");
 MQUnifiedsensor MQ135(Board, Voltage_Resolution, ADC_Bit_Resolution, MQ135Pin, "MQ-135");
 
+// Datenbankverbindung und Datensatz vorbereiten
 InfluxDBClient client(INFLUXDB_URL, INFLUXDB_ORG, INFLUXDB_BUCKET, INFLUXDB_TOKEN);
 Point data("sniffy");
 
-AsyncWebServer server(80);
-AsyncWebSocket ws("/ws");
+// Server für Websockets bereitstellen
+AsyncWebServer server(80); // Port des Servers
+AsyncWebSocket ws("/ws"); // Endpunkt der Websocket-Verbindung
 
+// WebSocket-Nachrichten zur Steuerung verarbeiten
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
   AwsFrameInfo *info = (AwsFrameInfo*)arg;
   if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
@@ -67,6 +79,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
   }
 }
 
+// WebSocket-Events verarbeiten
 void eventHandler(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
   switch (type) {
     case WS_EVT_CONNECT:
@@ -84,6 +97,7 @@ void eventHandler(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEvent
   }
 }
 
+// Vorwärts fahren
 void drive_forward()
 {
   digitalWrite(motor_left[0], LOW);
@@ -96,6 +110,7 @@ void drive_forward()
   delayMicroseconds(400);
 }
 
+// Rückwärts fahren
 void drive_back()
 {
   digitalWrite(motor_left[1], LOW);
@@ -108,6 +123,7 @@ void drive_back()
   delayMicroseconds(400);
 }
 
+// nach Links drehen
 void turn_left()
 {
     digitalWrite(motor_left[0], LOW);
@@ -117,6 +133,7 @@ void turn_left()
     delay(900);
   }
 
+// nach Rechts drehen
     void turn_right()
   {
     digitalWrite(motor_left[0], LOW);
@@ -125,6 +142,7 @@ void turn_left()
     digitalWrite(motor_right[1], HIGH);
     delay(900);
   }
+
 
 void setup()
 {
@@ -135,6 +153,7 @@ void setup()
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
     Serial.print("Got IP: ");  Serial.println(WiFi.localIP());
   
+  // Sensoren kalibrieren
     MQ2.setRegressionMethod(1);
     MQ2.init();
     MQ3.setRegressionMethod(1);
@@ -171,8 +190,10 @@ void setup()
     MQ7.setR0(calcR0MQ7/10);
     MQ135.setR0(calcR0MQ135/10);
 
+    // Datensatz taggen
     data.addTag("device", "Sniffy");
 
+    // Server erstellen
     ws.onEvent(eventHandler);
     server.addHandler(&ws);
 }
