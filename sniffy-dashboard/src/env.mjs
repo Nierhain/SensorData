@@ -12,6 +12,7 @@ export const env = createEnv({
     INFLUX_TOKEN: z.string(),
     INFLUX_BUCKET: z.string(),
     INFLUX_ORG: z.string(),
+    SNIFFY_URL: z.string(),
   },
 
   /**
@@ -33,6 +34,7 @@ export const env = createEnv({
     INFLUX_TOKEN: process.env.INFLUX_TOKEN,
     INFLUX_BUCKET: process.env.INFLUX_BUCKET,
     INFLUX_ORG: process.env.INFLUX_ORG,
+    SNIFFY_URL: process.env.SNIFFY_URL
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
