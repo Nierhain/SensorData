@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ESP Web Server</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <style>
+            html {
+                font-family: Arial, Helvetica, sans-serif;
+                text-align: center;
+            }
+            h1 {
+                font-size: 1.8rem;
+                color: white;
+            }
+            h2 {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: #143642;
+            }
+            .topnav {
+                overflow: hidden;
+                background-color: #143642;
+            }
+            body {
+                margin: 0;
+            }
+            .content {
+                padding: 30px;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            .card {
+                background-color: #f8f7f9;
+                box-shadow: 2px 2px 12px 1px rgba(140, 140, 140, 0.5);
+                padding: 50px;
+                height: 400px;
+            }
+            .controls {
+                position: relative;
+                height: 300px;
+            }
+            .button {
+                position: absolute;
+                padding: 15px 50px;
+                font-size: 24px;
+                text-align: center;
+                outline: none;
+                color: #fff;
+                background-color: #0f8b8d;
+                border: none;
+                border-radius: 5px;
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            }
+            #left {
+                top: 100px;
+                left: 0;
+            }
+            #right {
+                top: 100px;
+                left: 330px;
+            }
+            #stop {
+                top: 100px;
+                left: 160px;
+            }
+
+            #back {
+                top: 160px;
+                left: 130px;
+            }
+            #forward {
+                top: 35px;
+                left: 145px;
+            }
+            /*.button:hover {background-color: #0f8b8d}*/
+            .button:active {
+                background-color: #0f8b8d;
+                box-shadow: 2 2px #cdcdcd;
+                transform: translateY(2px);
+            }
+            .state {
+                font-size: 1.5rem;
+                color: #8c8c8c;
+                font-weight: bold;
+            }
+        </style>
+        <title>Sniffy-Steuerung</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="data:," />
+    </head>
+    <body>
+        <div class="topnav">
+            <h1>Sniffy - Steuerung</h1>
+        </div>
+        <div class="content">
+            <div class="card">
+                <div class="controls">
+                    <button id="forward" class="button">Vorwärts</button>
+                    <button id="left" class="button">Links</button>
+                    <button id="right" class="button">Rechts</button>
+                    <button id="back" class="button">Rückwärts</button>
+                    <button id="stop" class="button">STOP</button>
+                </div>
+            </div>
+        </div>
+        <script>
+            var gateway = `ws://192.168.178.27/ws`;
+            var websocket;
+            window.addEventListener("load", onLoad);
+            function initWebSocket() {
+                console.log("Trying to open a WebSocket connection...");
+                websocket = new WebSocket(gateway);
+                websocket.onopen = onOpen;
+                websocket.onclose = onClose;
+            }
+            function onOpen(event) {
+                console.log("Connection opened");
+            }
+            function onClose(event) {
+                console.log("Connection closed");
+                setTimeout(initWebSocket, 2000);
+            }
+            function onLoad(event) {
+                initWebSocket();
+                initButton();
+            }
+            function initButton() {
+                document
+                    .getElementById("forward")
+                    .addEventListener("click", forward);
+                document.getElementById("back").addEventListener("click", back);
+                document.getElementById("left").addEventListener("click", left);
+                document
+                    .getElementById("right")
+                    .addEventListener("click", right);
+                document.getElementById("stop").addEventListener("click", stop);
+            }
+            function forward() {
+                websocket.send("forward");
+            }
+            function left() {
+                websocket.send("left");
+            }
+            function right() {
+                websocket.send("right");
+            }
+            function back() {
+                websocket.send("back");
+            }
+            function stop() {
+                websocket.send("stop");
+            }
+        </script>
+    </body>
+</html>
