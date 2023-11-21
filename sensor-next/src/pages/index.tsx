@@ -9,8 +9,9 @@ import {
   CardTitle,
 } from "./components/ui/card"
 import { Overview } from "./components/ui/overview";
-import React, { useEffect } from "react";
+import React, { useEffect, MouseEventHandler } from "react";
 import { SensorData }from "./SensoroData";
+
 
 export default function Home() {
 
@@ -70,7 +71,7 @@ export default function Home() {
   }, []);
 
 
-  const PushSomeData: React.MouseEventHandler = (event) => {
+  const PushSomeData: React.MouseEventHandler = () => {
     dataHolder.forEach(element => {
       PushDataTo(element, 1)
     });
@@ -123,6 +124,16 @@ export default function Home() {
     }
   }
 
+  const [monoxideVisible, setMonoVisibility] = React.useState(true);
+  const [dioxideVisible, setDioVisibility] = React.useState(true);
+  const [ethanolVisible, setEthVisibility] = React.useState(true);
+  const [methanolVisible, setMethVisibility] = React.useState(true);
+  const [combustibleVisible, setCombVisibility] = React.useState(true);
+
+  const handleToggleVisibility = (value: boolean, setter: React.Dispatch<React.SetStateAction<boolean>>) => {
+    setter(!value);
+  };
+
   return (
     <>
       <Head>
@@ -136,14 +147,15 @@ export default function Home() {
         <div >
           <Card >
             <CardHeader>
-              <CardTitle>Sniffy the Sniffing Dog </CardTitle>
-              <CardDescription>SNIFFING FOR {monoxide_test_data[0]?.name}</CardDescription>
+              <CardTitle>{monoxide_test_data[0]?.name}</CardTitle>
+              <CardDescription></CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent style={{ display: monoxideVisible ? 'block' : 'none' }}>
               <Overview data={monoxide_test_data} color="#8cd98c"/>
             </CardContent>
             <CardFooter >
               <Button onClick={PushSomeData}>Download RAM</Button>
+              <Button onClick={() => handleToggleVisibility(monoxideVisible, setMonoVisibility)}>{monoxideVisible ? 'Hide' : 'Show'}</Button>
             </CardFooter>
           </Card>
         </div>
@@ -151,15 +163,15 @@ export default function Home() {
         <div >
           <Card >
             <CardHeader>
-              <CardTitle>Sniffy the Sniffing Dog </CardTitle>
-              <CardDescription>SNIFFING FOR {dioxide_test_data[0]?.name}</CardDescription>
+              <CardTitle>{dioxide_test_data[0]?.name}</CardTitle>
+              <CardDescription></CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent style={{ display: dioxideVisible ? 'block' : 'none' }}>
               <Overview data={dioxide_test_data} color="#ffff00"/>
             </CardContent>
             <CardFooter >
-              <Button variant="outline">Cancel</Button>
               <Button onClick={PushSomeData}>Download RAM</Button>
+              <Button onClick={() => handleToggleVisibility(dioxideVisible, setDioVisibility)}>{dioxideVisible ? 'Hide' : 'Show'}</Button>
             </CardFooter>
           </Card>
         </div>
@@ -167,14 +179,15 @@ export default function Home() {
         <div >
           <Card >
             <CardHeader>
-              <CardTitle>Sniffy the Sniffing Dog </CardTitle>
-              <CardDescription>SNIFFING FOR {ethanol_test_data[0]?.name}</CardDescription>
+              <CardTitle>{ethanol_test_data[0]?.name}</CardTitle>
+              <CardDescription></CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent style={{ display: ethanolVisible ? 'block' : 'none' }}>
               <Overview data={ethanol_test_data} color="#3366ff"/>
             </CardContent>
             <CardFooter >
               <Button onClick={PushSomeData}>Download RAM</Button>
+              <Button onClick={() => handleToggleVisibility(ethanolVisible, setEthVisibility)}>{ethanolVisible ? 'Hide' : 'Show'}</Button>
             </CardFooter>
           </Card>
         </div>
@@ -182,14 +195,15 @@ export default function Home() {
         <div >
           <Card >
             <CardHeader>
-              <CardTitle>Sniffy the Sniffing Dog </CardTitle>
-              <CardDescription>SNIFFING FOR {methanol_test_data[0]?.name}</CardDescription>
+              <CardTitle>{methanol_test_data[0]?.name}</CardTitle>
+              <CardDescription></CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent style={{ display: methanolVisible ? 'block' : 'none' }}>
               <Overview data={methanol_test_data} color=" #cc00cc"/>
             </CardContent>
             <CardFooter >
               <Button onClick={PushSomeData}>Download RAM</Button>
+              <Button onClick={() => handleToggleVisibility(methanolVisible, setMethVisibility)}>{methanolVisible ? 'Hide' : 'Show'}</Button>
             </CardFooter>
           </Card>
         </div>
@@ -197,14 +211,15 @@ export default function Home() {
         <div >
           <Card >
             <CardHeader>
-              <CardTitle>Sniffy the Sniffing Dog </CardTitle>
-              <CardDescription>SNIFFING FOR {combustible_test_data[0]?.name}</CardDescription>
+              <CardTitle>{combustible_test_data[0]?.name}</CardTitle>
+              <CardDescription></CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent style={{ display: combustibleVisible ? 'block' : 'none' }}>
               <Overview data={combustible_test_data} color="#ff4d4d"/>
             </CardContent>
             <CardFooter >
               <Button onClick={PushSomeData}>Download RAM</Button>
+              <Button onClick={() => handleToggleVisibility(combustibleVisible, setCombVisibility)}>{combustibleVisible ? 'Hide' : 'Show'}</Button>
             </CardFooter>
           </Card>
         </div>
