@@ -1,0 +1,4 @@
+Die beiden zip dateien über Sketch -> Include Library -> Add .ZIP Library in die Arduino IDE importieren
+über den Library Manager (Bücher Symbol linke Seite) dann noch "influxdb" suchen und "ESP8266 InfluxDb" installieren
+Ebenfalls "MQUnifiedsensor" suchen und installieren
+Eventuell noch ArduinoJson installieren
