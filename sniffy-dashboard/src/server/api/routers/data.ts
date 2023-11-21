@@ -23,3 +23,10 @@ export const dataRouter = createTRPCRouter({
     return result;
   }),
 });
+
+export const sniffyRouter = createTRPCRouter({
+  sniffy: publicProcedure.query(() => {
+    let socket = new WebSocket("ws://" + env.SNIFFY_URL);
+    return socket
+  })
+})
