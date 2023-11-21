@@ -179,7 +179,15 @@ export default function Home() {
   useEffect(() => {
     setAvgMono(avgData(monoxide_test_data));
     setChangeMono(calcChange(monoxide_test_data));
-  }, [monoxide_test_data]);
+    setAvgDio(avgData(dioxide_test_data));
+    setChangeDio(calcChange(dioxide_test_data));
+    setAvgEth(avgData(ethanol_test_data));
+    setChangeEth(calcChange(ethanol_test_data));
+    setAvgMeth(avgData(methanol_test_data));
+    setChangeMeth(calcChange(methanol_test_data));
+    setAvgComb(avgData(combustible_test_data));
+    setChangeComb(calcChange(combustible_test_data));
+  }, [monoxide_test_data, dioxide_test_data, ethanol_test_data, methanol_test_data, combustible_test_data]);
 
   
 //Funktion, um den Content anzuzeigen/ zu verstecken
