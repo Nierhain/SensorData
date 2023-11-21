@@ -139,7 +139,7 @@ const char index_html[] PROGMEM = R"rawliteral(
             </div>
         </div>
         <script>
-            var gateway = `ws://192.168.178.27/ws`;
+            var gateway = `ws://${window.location.hostname}/ws`;
             var websocket;
             window.addEventListener("load", onLoad);
             function initWebSocket() {
