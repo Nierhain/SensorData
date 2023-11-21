@@ -6,11 +6,11 @@ interface SensorData {
   id: number;
   timestamp: Date;
   timeLabel: string;
-  name: string;
+  name?: string;
   value: number;
 };
   
-export function Overview({data}: {data?: SensorData[];}) {
+export function Overview({data, color}: {data?: SensorData[]; color?: string}) {
   
   if(data){
     return (
@@ -23,7 +23,7 @@ export function Overview({data}: {data?: SensorData[];}) {
             axisLine={false}
           />
           <YAxis />
-          <Bar dataKey="value" fill="#6666ff" />
+          <Bar dataKey="value" fill={color} />
         </BarChart>
       </ResponsiveContainer>
     )

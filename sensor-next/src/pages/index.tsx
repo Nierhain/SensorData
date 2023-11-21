@@ -9,78 +9,129 @@ import {
   CardTitle,
 } from "./components/ui/card"
 import { Overview } from "./components/ui/overview";
-import React, { useEffect } from "react";
+import React, { useEffect, MouseEventHandler } from "react";
 import { SensorData }from "./SensoroData";
-import {Table} from "./components/ui/table"
 
-
-/*
-function test() {
-  let x = 1 + 1;
-  return x == 2;
-}
-
-function HelloWorld({value}: {value: number}) {
-  const [counter, setCounter] = useState<number>(0);
-  const otherValue = 0;
-
-  return <div>Counter: {counter}<button onClick={() => setCounter(prev => prev + 1)}>Counter +</button></div>
-}
-*/
 
 export default function Home() {
 
+  const SensorNames: string[] = ['Monoxide', 'Dioxide', 'Ethanol', 'Methanol', 'Combustible'];
 
-  const [_test_data, setData] = React.useState<SensorData[]>([{id: 0,timestamp: new Date(), timeLabel: 'testLabel',name: 'Sensor 0', value: 42}]);
+  const [monoxide_test_data, setMonoData] = React.useState<SensorData[]>([]);
+  const [dioxide_test_data, setDioData] = React.useState<SensorData[]>([]);
+  const [ethanol_test_data, setEthData] = React.useState<SensorData[]>([]);
+  const [methanol_test_data, setMethData] = React.useState<SensorData[]>([]);
+  const [combustible_test_data, setCombData] = React.useState<SensorData[]>([]);
+
+  const dataHolder: any[] = [monoxide_test_data, dioxide_test_data, ethanol_test_data, methanol_test_data, combustible_test_data];
 
   useEffect(() => {
-    if(_test_data){
-      const newDataPoint: SensorData[] = [];
+    if(dataHolder){
+      let newDataPoint: SensorData[] = [];
       
-      for (let i = 1; i <= 5; i++) {
-        for (let j = 1; j <= 5; j++){
-          const sensorName = `Sensor ${i}`;
-          const rvalue = Math.floor(Math.random() * 101);
-          const _timestamp = new Date();
-          const _timeLabel = _timestamp.getHours().toString() + ":" + _timestamp.getMinutes().toString() + ":" + _timestamp.getSeconds().toString();
+      for (let i = 0; i < 5; i++) {
+        for (let j = 1; j <= 10; j++){
+
+          let sensorName = SensorNames[i];
+          let rvalue = Math.floor(Math.random() * 101);
+          let _timestamp = new Date();
+          let _timeLabel = _timestamp.getHours().toString() + ":" + _timestamp.getMinutes().toString() + ":" + _timestamp.getSeconds().toString();
           
           newDataPoint.push({
-            id: i,
+            id: j,
             timestamp: _timestamp,
             timeLabel: _timeLabel,
             name: sensorName,
             value: rvalue
           });
         }
+
+        switch (i) {
+          case 0:
+              setMonoData([...monoxide_test_data, ...newDataPoint]);
+              break;
+          case 1:
+              setDioData([...dioxide_test_data, ...newDataPoint]);
+              break;
+          case 2:
+              setEthData([...ethanol_test_data, ...newDataPoint]);
+              break;
+          case 3:
+              setMethData([...methanol_test_data, ...newDataPoint]);
+              break;
+          case 4:
+              setCombData([...combustible_test_data, ...newDataPoint]);
+              break;
+          default:
+              break;
       }
-    setData([..._test_data, ...newDataPoint]);
-  }
+      newDataPoint = [];
+      }
+    }
   }, []);
 
-  const PushSomeData: React.MouseEventHandler = (event) => {
-    
-    if(_test_data){
 
-      const size: number = _test_data.length;
-      const newsize: number = _test_data.length + 1;
+  const PushSomeData: React.MouseEventHandler = () => {
+    dataHolder.forEach(element => {
+      PushDataTo(element, 1)
+    });
+    
+  };
+
+  function PushDataTo(data: SensorData[], num: number) {
+    if(data){
+
+      const size: number = data.length;
+      const newsize: number = data.length + num;
+      let newDataPoints: SensorData[] = [];
 
       for (let i = size + 1; i <= newsize; i++) {
-        const sensorName = `Sensor ${i}`;
+        const sensorName = data[0]?.name;
         const rvalue = Math.floor(Math.random() * 101);
         const _timestamp = new Date();
         const _timeLabel = _timestamp.getHours().toString() + ":" + _timestamp.getMinutes().toString() + ":" + _timestamp.getSeconds().toString();
        
-        const newDataPoint: SensorData = {
+        let newDataPoint: SensorData = {
           id: i,
           timestamp: _timestamp,
           timeLabel: _timeLabel,
           name: sensorName,
           value: rvalue
         };
-        
-        setData([..._test_data, newDataPoint]);
+
+        newDataPoints.push(newDataPoint);
+      }
+
+      switch (data[0]?.name) {
+        case SensorNames[0]:
+            setMonoData([...monoxide_test_data, ...newDataPoints]);
+            break;
+        case SensorNames[1]:
+            setDioData([...dioxide_test_data, ...newDataPoints]);
+            break;
+        case SensorNames[2]:
+            setEthData([...ethanol_test_data, ...newDataPoints]);
+            break;
+        case SensorNames[3]:
+            setMethData([...methanol_test_data, ...newDataPoints]);
+            break;
+        case SensorNames[4]:
+            setCombData([...combustible_test_data, ...newDataPoints]);
+            break;
+        default:
+            break;
       }
     }
+  }
+
+  const [monoxideVisible, setMonoVisibility] = React.useState(true);
+  const [dioxideVisible, setDioVisibility] = React.useState(true);
+  const [ethanolVisible, setEthVisibility] = React.useState(true);
+  const [methanolVisible, setMethVisibility] = React.useState(true);
+  const [combustibleVisible, setCombVisibility] = React.useState(true);
+
+  const handleToggleVisibility = (value: boolean, setter: React.Dispatch<React.SetStateAction<boolean>>) => {
+    setter(!value);
   };
 
   return (
@@ -96,31 +147,79 @@ export default function Home() {
         <div >
           <Card >
             <CardHeader>
-              <CardTitle>Sniffy the Sniffing Dog </CardTitle>
-              <CardDescription>SNIFFY SNIFFING FOR {_test_data[0]?.name}</CardDescription>
+              <CardTitle>{monoxide_test_data[0]?.name}</CardTitle>
+              <CardDescription></CardDescription>
             </CardHeader>
-            <CardContent>
-              <Overview data={_test_data}/>
+            <CardContent style={{ display: monoxideVisible ? 'block' : 'none' }}>
+              <Overview data={monoxide_test_data} color="#8cd98c"/>
             </CardContent>
             <CardFooter >
-              <Button variant="outline">Cancel</Button>
               <Button onClick={PushSomeData}>Download RAM</Button>
+              <Button onClick={() => handleToggleVisibility(monoxideVisible, setMonoVisibility)}>{monoxideVisible ? 'Hide' : 'Show'}</Button>
             </CardFooter>
           </Card>
         </div>
 
-        <div>
-         <Card >
+        <div >
+          <Card >
             <CardHeader>
-              <CardTitle></CardTitle>
-              <CardDescription>SNIFFY SHOWING ALL SNIFFS FOR {_test_data[0]?.name}</CardDescription>
+              <CardTitle>{dioxide_test_data[0]?.name}</CardTitle>
+              <CardDescription></CardDescription>
             </CardHeader>
-            <CardContent>
-              <Table />
+            <CardContent style={{ display: dioxideVisible ? 'block' : 'none' }}>
+              <Overview data={dioxide_test_data} color="#ffff00"/>
             </CardContent>
             <CardFooter >
-              <p>footer content</p>
               <Button onClick={PushSomeData}>Download RAM</Button>
+              <Button onClick={() => handleToggleVisibility(dioxideVisible, setDioVisibility)}>{dioxideVisible ? 'Hide' : 'Show'}</Button>
+            </CardFooter>
+          </Card>
+        </div>
+
+        <div >
+          <Card >
+            <CardHeader>
+              <CardTitle>{ethanol_test_data[0]?.name}</CardTitle>
+              <CardDescription></CardDescription>
+            </CardHeader>
+            <CardContent style={{ display: ethanolVisible ? 'block' : 'none' }}>
+              <Overview data={ethanol_test_data} color="#3366ff"/>
+            </CardContent>
+            <CardFooter >
+              <Button onClick={PushSomeData}>Download RAM</Button>
+              <Button onClick={() => handleToggleVisibility(ethanolVisible, setEthVisibility)}>{ethanolVisible ? 'Hide' : 'Show'}</Button>
+            </CardFooter>
+          </Card>
+        </div>
+
+        <div >
+          <Card >
+            <CardHeader>
+              <CardTitle>{methanol_test_data[0]?.name}</CardTitle>
+              <CardDescription></CardDescription>
+            </CardHeader>
+            <CardContent style={{ display: methanolVisible ? 'block' : 'none' }}>
+              <Overview data={methanol_test_data} color=" #cc00cc"/>
+            </CardContent>
+            <CardFooter >
+              <Button onClick={PushSomeData}>Download RAM</Button>
+              <Button onClick={() => handleToggleVisibility(methanolVisible, setMethVisibility)}>{methanolVisible ? 'Hide' : 'Show'}</Button>
+            </CardFooter>
+          </Card>
+        </div>
+
+        <div >
+          <Card >
+            <CardHeader>
+              <CardTitle>{combustible_test_data[0]?.name}</CardTitle>
+              <CardDescription></CardDescription>
+            </CardHeader>
+            <CardContent style={{ display: combustibleVisible ? 'block' : 'none' }}>
+              <Overview data={combustible_test_data} color="#ff4d4d"/>
+            </CardContent>
+            <CardFooter >
+              <Button onClick={PushSomeData}>Download RAM</Button>
+              <Button onClick={() => handleToggleVisibility(combustibleVisible, setCombVisibility)}>{combustibleVisible ? 'Hide' : 'Show'}</Button>
             </CardFooter>
           </Card>
         </div>
