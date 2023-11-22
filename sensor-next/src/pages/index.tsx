@@ -31,28 +31,34 @@ function avgData(data: SensorData[]){
 function calcChange(data: SensorData[]){
   if(data.length >= 2){
 
-    let preValue = data[data.length - 1]!.value;
+    let newValue = data[data.length - 1]!.value;
     let lastValue = data[data.length - 2]!.value;
 
-    return ((lastValue / preValue)*100).toFixed(1);
+    return (((newValue - lastValue) / lastValue)*100).toFixed(1);
   }
   return 'not enough values';
 }
 
 export default function Home() {
 
-  //React Variablen, die zur Runtime auf der Homepage gebraucht werden
+  //React Variablen, die zur Runtime auf der Homepage gebraucht werden ab hier
+  
+  //helper
   const SensorNames: string[] = ['Monoxide', 'Dioxide', 'Ethanol', 'Methanol', 'Combustible'];
 
+  //hier kommen jeweils die verschiedenen Sensordaten rein
   const [monoxide_test_data, setMonoData] = React.useState<SensorData[]>([]);
   const [dioxide_test_data, setDioData] = React.useState<SensorData[]>([]);
   const [ethanol_test_data, setEthData] = React.useState<SensorData[]>([]);
   const [methanol_test_data, setMethData] = React.useState<SensorData[]>([]);
   const [combustible_test_data, setCombData] = React.useState<SensorData[]>([]);
-
+  //helper
   const dataHolder: any[] = [monoxide_test_data, dioxide_test_data, ethanol_test_data, methanol_test_data, combustible_test_data];
 
-
+  /*
+  verschiedene variablen um Berechnungen anzuzeigen
+  ja das müssen strings sein, weil React sonst beim anzeigen dumm macht :) <--(ein haufen Hydration errors lauern hier...)  
+  */
   const [avgMono, setAvgMono] = React.useState('not enough values');
   const [changeMono, setChangeMono] = React.useState('Not enough values');
   const [avgDio, setAvgDio] = React.useState('not enough values');
@@ -64,6 +70,7 @@ export default function Home() {
   const [avgComb, setAvgComb] = React.useState('not enough values');
   const [changeComb, setChangeComb] = React.useState('Not enough values');
 
+  //helper zur anzeige der verschiedenen content-cards
   const [monoxideVisible, setMonoVisibility] = React.useState(true);
   const [dioxideVisible, setDioVisibility] = React.useState(true);
   const [ethanolVisible, setEthVisibility] = React.useState(true);
@@ -84,6 +91,7 @@ export default function Home() {
           let sensorName = SensorNames[i];
           let rvalue = Math.floor(Math.random() * 101);
           let _timestamp = new Date();
+          _timestamp.setMinutes((_timestamp.getMinutes() + j) % 60);
           let _timeLabel = _timestamp.getHours().toString() + ":" + _timestamp.getMinutes().toString() + ":" + _timestamp.getSeconds().toString();
           
           newDataPoint.push({
@@ -127,7 +135,7 @@ export default function Home() {
     
   };
 
-  //dunktion, die neue Daten generiert
+  //Funktion, die neue Daten generiert
   function PushDataTo(data: SensorData[], num: number) {
     if(data){
 
@@ -205,7 +213,7 @@ export default function Home() {
       </Head>
 
       <main >
-      
+
         <div >
           <Card >
             <CardHeader>
@@ -215,11 +223,11 @@ export default function Home() {
             </CardHeader>
             <CardContent style={{ display: monoxideVisible ? 'block' : 'none' }}>
               <Overview data={monoxide_test_data} color="#8cd98c"/>
-              <Badge>AVG: {avgMono}</Badge>
+              <Badge variant={parseFloat(avgMono) > 50 ? 'destructive': 'default'}>AVG: {avgMono}</Badge>
               <Badge>Change: {changeMono}%</Badge>
             </CardContent>
             <CardFooter >
-              <Button onClick={PushSomeData}>Download RAM</Button>
+              <Button onClick={PushSomeData}>Generate</Button>
               <Button onClick={() => handleToggleVisibility(monoxideVisible, setMonoVisibility)}>{monoxideVisible ? 'Hide' : 'Show'}</Button>
             </CardFooter>
           </Card>
@@ -233,11 +241,11 @@ export default function Home() {
             </CardHeader>
             <CardContent style={{ display: dioxideVisible ? 'block' : 'none' }}>
               <Overview data={dioxide_test_data} color="#ffff00"/>
-              <Badge>AVG: {avgDio}</Badge>
+              <Badge variant={parseFloat(avgDio) > 50 ? 'destructive': 'default'}>AVG: {avgDio}</Badge>
               <Badge>Change: {changeDio}%</Badge>
             </CardContent>
             <CardFooter >
-              <Button onClick={PushSomeData}>Download RAM</Button>
+              <Button onClick={PushSomeData}>Generate</Button>
               <Button onClick={() => handleToggleVisibility(dioxideVisible, setDioVisibility)}>{dioxideVisible ? 'Hide' : 'Show'}</Button>
             </CardFooter>
           </Card>
@@ -251,11 +259,11 @@ export default function Home() {
             </CardHeader>
             <CardContent style={{ display: ethanolVisible ? 'block' : 'none' }}>
               <Overview data={ethanol_test_data} color="#3366ff"/>
-              <Badge>AVG: {avgEth}</Badge>
+              <Badge variant={parseFloat(avgEth) > 50 ? 'destructive': 'default'}>AVG: {avgEth}</Badge>
               <Badge>Change: {changeEth}%</Badge>
             </CardContent>
             <CardFooter >
-              <Button onClick={PushSomeData}>Download RAM</Button>
+              <Button onClick={PushSomeData}>Generate</Button>
               <Button onClick={() => handleToggleVisibility(ethanolVisible, setEthVisibility)}>{ethanolVisible ? 'Hide' : 'Show'}</Button>
             </CardFooter>
           </Card>
@@ -269,11 +277,11 @@ export default function Home() {
             </CardHeader>
             <CardContent style={{ display: methanolVisible ? 'block' : 'none' }}>
               <Overview data={methanol_test_data} color=" #cc00cc"/>
-              <Badge>AVG: {avgMeth}</Badge>
+              <Badge variant={parseFloat(avgMeth) > 50 ? 'destructive': 'default'}>AVG: {avgMeth}</Badge>
               <Badge>Change: {changeMeth}%</Badge>
             </CardContent>
             <CardFooter >
-              <Button onClick={PushSomeData}>Download RAM</Button>
+              <Button onClick={PushSomeData}>Generate</Button>
               <Button onClick={() => handleToggleVisibility(methanolVisible, setMethVisibility)}>{methanolVisible ? 'Hide' : 'Show'}</Button>
             </CardFooter>
           </Card>
@@ -287,11 +295,11 @@ export default function Home() {
             </CardHeader>
             <CardContent style={{ display: combustibleVisible ? 'block' : 'none' }}>
               <Overview data={combustible_test_data} color="#ff4d4d"/>
-              <Badge>AVG: {avgComb}</Badge>
+              <Badge variant={parseFloat(avgComb) > 50 ? 'destructive': 'default'}>AVG: {avgComb}</Badge>
               <Badge>Change: {changeComb}%</Badge>
             </CardContent>
             <CardFooter >
-              <Button onClick={PushSomeData}>Download RAM</Button>
+              <Button onClick={PushSomeData}>Generate</Button>
               <Button onClick={() => handleToggleVisibility(combustibleVisible, setCombVisibility)}>{combustibleVisible ? 'Hide' : 'Show'}</Button>
             </CardFooter>
           </Card>

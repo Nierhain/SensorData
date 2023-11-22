@@ -1,6 +1,6 @@
 "use client"
 
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 
 interface SensorData {
   id: number;
@@ -16,6 +16,7 @@ export function Overview({data, color}: {data?: SensorData[]; color?: string}) {
     return (
       <ResponsiveContainer width="100%" height={350}>
         <BarChart data={data}>
+          <CartesianGrid strokeDasharray="3 3"/>
           <XAxis
             dataKey="timeLabel"
             stroke="#888888"
@@ -23,6 +24,8 @@ export function Overview({data, color}: {data?: SensorData[]; color?: string}) {
             axisLine={false}
           />
           <YAxis />
+          <Tooltip />
+          <Legend />
           <Bar dataKey="value" fill={color} />
         </BarChart>
       </ResponsiveContainer>
